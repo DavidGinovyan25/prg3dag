@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdlib>
+
 #pragma pack(push, 1)
 struct BITMAPFILEHEADER {
     uint16_t bfType;
@@ -21,25 +23,25 @@ struct BITMAPINFOHEADER {
     uint32_t biClrUsed;
     uint32_t biClrImportant;
 } ;
-#pragma pack(pop, 1)
+#pragma pack(pop)
 
 const uint32_t PALETTE[16] = {
     0x00FFFFFF,  // 0: белый
-    0x0000FF00,  // 1: зелёный
+    0x00FF0000,  // 1: зелёный
     0x00FF00FF,  // 2: фиолетовый
-    0x0000FFFF,  // 3: жёлтый
+    0x0000FF00,  // 3: жёлтый
     0x00000000,  // 4: чёрный
     0,0,0,0,0,0,0,0,0,0,0
 };
-//высота и ширина определяются как максимум из столбца в .tsv файле - это задаст сетку
-void FillBMPFields(
+
+void FillBmpFields(
     BITMAPFILEHEADER& file_header, 
     BITMAPINFOHEADER& info_header, 
     int32_t& Width, 
     int32_t& height    ) {
 
-    uint32_t rowSize = ((Width + 1) / 2 + 3) & ~3;
-    uint32_t ImageSize = rowSize * height;
+    //uint32_t rowSize = ((Width + 1) / 2 + 3) & ~3;
+    uint32_t ImageSize = Width * height; //fix: delete alignment from struct
 
     file_header = {
         .bfType = 0x4d42,
@@ -63,5 +65,37 @@ void FillBMPFields(
     };
 }
 
+struct ExtremePoints {
+    int16_t max_x = 0;
+    int16_t max_y = 0;
+    int16_t min_x = 0;
+    int16_t min_y = 0;
+};
+
+ExtremePoints image_extreme_points;
+
+void ExtractExtremePoints() {}
+
+struct Size{
+    int32_t len_x = 0;
+    int32_t len_y = 0;
+};
+
+Size image_size = {
+    .len_x = std::abs(image_extreme_points.max_x - image_extreme_points.min_x),
+    .len_y = std::abs(image_extreme_points.max_y - image_extreme_points.min_y)
+};
+
+uint64_t GetCountCoordinates() {return 1;}
+
+int16_t *bmp_pixel_data = new int16_t[image_size.len_x * image_size.len_y];
+
+void SetBmpPixelData() {}
+
+void WriteFullToBmp() {
+
+}
 int main(int argc, char *argv[]) {
 }
+
+
