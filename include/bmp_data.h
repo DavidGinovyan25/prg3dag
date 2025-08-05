@@ -54,6 +54,7 @@ inline Size image_size;
 void FillBmpFields(BITMAPFILEHEADER&, BITMAPINFOHEADER&, int32_t&, int32_t&);
 void ExtractExtremePoints();
 void CalculateImageSize();
-void Initialisation(uint64_t **);
+void SetSandAtCoordinates(uint64_t **);
 void SetBmpPixelColor(uint64_t **);
 void WriteFullToBmp(uint64_t **);
+void PrepearFrame(uint64_t **&);

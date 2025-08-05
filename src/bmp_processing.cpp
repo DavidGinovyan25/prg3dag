@@ -53,7 +53,7 @@ void CalculateImageSize(){
     };
 }
 
-void Initialisation(uint64_t **bmp_pixel_data) {
+void SetSandAtCoordinates(uint64_t **bmp_pixel_data) {
     std::ifstream pixel_file;
     pixel_file.open("gen.tsv");
     int16_t x;
@@ -62,6 +62,18 @@ void Initialisation(uint64_t **bmp_pixel_data) {
     while (!pixel_file.eof()) {
         pixel_file >> x >> y >> count; 
         bmp_pixel_data[x][y] = count;
+    }
+}
+
+void PrepearFrame(uint64_t **&bmp_pixel_data) {
+    bmp_pixel_data = new uint64_t*[image_size.len_x * image_size.len_y];
+    for (int i = 0; i < image_size.len_x; i++) {
+        bmp_pixel_data[i] = new uint64_t[image_size.len_y];
+    }
+    for (int i = 0; i < image_size.len_x; i++) {
+        for (int j = 0; j < image_size.len_y; j++) {
+            bmp_pixel_data[i][j] = 0x00000000;
+        }
     }
 }
 
