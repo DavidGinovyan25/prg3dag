@@ -9,24 +9,24 @@ void FillBmpFields(
     uint32_t ImageSize = Width * height;
 
     file_header = {
-        .bfType = 0x4d42,
-        .bfSize = 14 + 40 + 64 + ImageSize,
-        .bfReserved1 = 0,
-        .bfReserved2 = 0,
-        .bfOffBits = 14 + 40 + 64
+        .bf_type = 0x4d42,
+        .bf_size = 14 + 40 + 64 + ImageSize,
+        .bf_reserved1 = 0,
+        .bf_reserved2 = 0,
+        .bf_offBits = 14 + 40 + 64
     };
     info_header = {
-        .biSize = 40,
-        .biWidth = Width,
-        .biHeight = height,
-        .biPlanes = 1,
-        .biBitCount = 4,
-        .biCompression = 0,
-        .biSizeImage = ImageSize,
-        .biXPelsPerMeter = 0,
-        .biYPelsPerMeter = 0,
-        .biClrUsed = 0,
-        .biClrImportant = 0
+        .bi_size = 40,
+        .bi_width = Width,
+        .bi_height = height,
+        .bi_planes = 1,
+        .bi_bitCount = 4,
+        .bi_compression = 0,
+        .bi_sizeImage = ImageSize,
+        .bi_xPelsPerMeter = 0,
+        .bi_yPelsPerMeter = 0,
+        .bi_clrUsed = 0,
+        .bi_clrImportant = 0
     };
 }
 
@@ -61,26 +61,26 @@ void SetSandAtCoordinates(uint64_t **bmp_pixel_data) {
     int16_t count; 
     while (!pixel_file.eof()) {
         pixel_file >> x >> y >> count; 
-        bmp_pixel_data[x][y] = count;
+        bmp_pixel_data[y][x] = count;
     }
     pixel_file.close();
 }
 
 void PrepearFrame(uint64_t **&bmp_pixel_data) {
     bmp_pixel_data = new uint64_t*[image_size.len_x * image_size.len_y];
-    for (int i = 0; i < image_size.len_x; i++) {
-        bmp_pixel_data[i] = new uint64_t[image_size.len_y];
+    for (int i = 0; i < image_size.len_y; i++) {
+        bmp_pixel_data[i] = new uint64_t[image_size.len_x];
     }
-    for (int i = 0; i < image_size.len_x; i++) {
-        for (int j = 0; j < image_size.len_y; j++) {
+    for (int i = 0; i < image_size.len_y; i++) {
+        for (int j = 0; j < image_size.len_x; j++) {
             bmp_pixel_data[i][j] = 0x00000000;
         }
     }
 }
 
 void SetBmpPixelColor(uint64_t **bmp_pixel_data) {
-    for (int i = 0; i < image_size.len_x; i++) {   
-        for (int j = 0; j < image_size.len_y; j++) {
+    for (int i = 0; i < image_size.len_y; i++) {   
+        for (int j = 0; j < image_size.len_x; j++) {
             switch (bmp_pixel_data[i][j]) {
             case Index::Color::White:
                 bmp_pixel_data[i][j] = Index::Color::White;
@@ -115,10 +115,10 @@ void WriteFullToBmp(uint64_t **bmp_pixel_data) {
     for (int y = image_size.len_y - 1; y >= 0; y--) {
         char *rows = new char[bmp_row_size]{0};
         for (int x = 0; x < image_size.len_x; x++) {
-            uint64_t color = bmp_pixel_data[x][y];
+            uint64_t color = bmp_pixel_data[y][x];
             int row_index = x / 2;
             if (x % 2 == 0) {
-                rows[row_index] |= (color << 2); 
+                rows[row_index] |= (color << 4); 
             } else {
                 rows[row_index] |= color; 
             }

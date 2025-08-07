@@ -5,25 +5,25 @@
 
 #pragma pack(push, 1)
 struct BITMAPFILEHEADER {
-    uint16_t bfType;
-    uint32_t bfSize;
-    uint16_t bfReserved1;
-    uint16_t bfReserved2;
-    uint32_t bfOffBits;
+    uint16_t bf_type;
+    uint32_t bf_size;
+    uint16_t bf_reserved1;
+    uint16_t bf_reserved2;
+    uint32_t bf_offBits;
 };
 
 struct BITMAPINFOHEADER {
-    uint32_t biSize ;
-    int32_t biWidth;
-    int32_t biHeight;
-    uint16_t biPlanes;
-    uint16_t biBitCount;
-    uint32_t biCompression;
-    uint32_t biSizeImage;
-    uint32_t biXPelsPerMeter;
-    uint32_t biYPelsPerMeter;
-    uint32_t biClrUsed;
-    uint32_t biClrImportant;
+    uint32_t bi_size ;
+    int32_t bi_width;
+    int32_t bi_height;
+    uint16_t bi_planes;
+    uint16_t bi_bitCount;
+    uint32_t bi_compression;
+    uint32_t bi_sizeImage;
+    uint32_t bi_xPelsPerMeter;
+    uint32_t bi_yPelsPerMeter;
+    uint32_t bi_clrUsed;
+    uint32_t bi_clrImportant;
 } ;
 #pragma pack(pop)
 
