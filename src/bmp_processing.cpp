@@ -63,6 +63,7 @@ void SetSandAtCoordinates(uint64_t **bmp_pixel_data) {
         pixel_file >> x >> y >> count; 
         bmp_pixel_data[x][y] = count;
     }
+    pixel_file.close();
 }
 
 void PrepearFrame(uint64_t **&bmp_pixel_data) {
@@ -77,46 +78,52 @@ void PrepearFrame(uint64_t **&bmp_pixel_data) {
     }
 }
 
-void SetBmpPixelColor(uint64_t **bmp_pixel_data) {//подумать про enum class
-    for (int i = 0; i < image_size.len_x; i++) {    //для количества куч и кода цвета
+void SetBmpPixelColor(uint64_t **bmp_pixel_data) {
+    for (int i = 0; i < image_size.len_x; i++) {   
         for (int j = 0; j < image_size.len_y; j++) {
             switch (bmp_pixel_data[i][j]) {
-            case 0:
-                bmp_pixel_data[i][j] = 0x00FFFFFF;
+            case Index::Color::White:
+                bmp_pixel_data[i][j] = Index::Color::White;
                 continue;
-            case 1:
-                bmp_pixel_data[i][j] = 0x00FF0000;
+            case Index::Color::Green:
+                bmp_pixel_data[i][j] = Index::Color::Green;
                 continue;
-            case 2:
-                bmp_pixel_data[i][j] = 0x00FF00FF;
+            case Index::Color::Violete:
+                bmp_pixel_data[i][j] = Index::Color::Violete;
                 continue;
-            case 3:
-                bmp_pixel_data[i][j] = 0x0000FF00;
+            case Index::Color::Yellow:
+                bmp_pixel_data[i][j] = Index::Color::Yellow;
                 continue;
             default:
-                bmp_pixel_data[i][j] = 0x00000000;
+                bmp_pixel_data[i][j] = Index::Color::Black;
                 continue;
             }
         }
     }
 }
 
-// void WriteFullToBmp(uint64_t **bmp_pixel_data) {//подумать про 1 пиксель - 4 бита
-//     BITMAPFILEHEADER file_header;
-//     BITMAPINFOHEADER info_header;
-//     std::ofstream bmp_file;
-//     bmp_file.open("x.bmp", std::ios::binary);
-//     //bmp_file.write(reinterpret_cast<const char*>(&file_header), sizeof(BITMAPFILEHEADER));
-//     //bmp_file.write(reinterpret_cast<const char*>(&info_header), sizeof(BITMAPINFOHEADER));
-//     //bmp_file.write(reinterpret_cast<const char*>(&PALETTE), sizeof(PALETTE));
-//     for (int i = image_size.len_x - 1; i >= 0 ; i++) { //ПО ШИРИНЕ
-//         //bmp_file.write(reinterpret_cast<const char *>(bmp_pixel_data[i]), sizeof(uint64_t) * image_size.len_y);
-//         //длина ширины
-//         int32_t temp = (info_header.biWidth / 2 + 3);
-//         int32_t count_byte = temp - (temp % 4);
-//         const char * zero = "0x00000000"; 
-//         for (int i = 0; i < count_byte - info_header.biWidth / 2; i++) {
-//             //bmp_file.write(zero, sizeof(zero));
-//         }
-//     }
-// }
+void WriteFullToBmp(uint64_t **bmp_pixel_data) {
+    BITMAPFILEHEADER file_header;
+    BITMAPINFOHEADER info_header;
+    FillBmpFields(file_header, info_header, image_size.len_x, image_size.len_y);
+    std::ofstream bmp_file("x.bmp", std::ios::binary);
+    bmp_file.write(reinterpret_cast<const char*>(&file_header), sizeof(BITMAPFILEHEADER));
+    bmp_file.write(reinterpret_cast<const char*>(&info_header), sizeof(BITMAPINFOHEADER));
+    bmp_file.write(reinterpret_cast<const char*>(&PALETTE), sizeof(PALETTE));
+
+    int bmp_row_size = ((image_size.len_x + 1) / 2 + 3) & ~3;
+    for (int y = image_size.len_y - 1; y >= 0; y--) {
+        char *rows = new char[bmp_row_size]{0};
+        for (int x = 0; x < image_size.len_x; x++) {
+            uint64_t color = bmp_pixel_data[x][y];
+            int row_index = x / 2;
+            if (x % 2 == 0) {
+                rows[row_index] |= (color << 2); 
+            } else {
+                rows[row_index] |= color; 
+            }
+        }
+        bmp_file.write(static_cast<const char*>(rows), bmp_row_size);
+    }
+    bmp_file.close();
+}

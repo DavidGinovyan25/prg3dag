@@ -27,12 +27,30 @@ struct BITMAPINFOHEADER {
 } ;
 #pragma pack(pop)
 
+namespace Index {
+    enum Color : uint64_t {
+        White = 0,
+        Green = 1,
+        Violete = 2,
+        Yellow = 3,
+        Black = 4 
+    };
+}
+
+enum Color : uint32_t {
+    White = 0x00FFFFFF,
+    Green = 0x0000FF00,
+    Violete = 0x00FF00FF,
+    Yellow = 0x00FFFF00,
+    Black = 0x00000000 
+};
+
 const uint32_t PALETTE[16] = {
-    0x00FFFFFF,  // 0: белый
-    0x00FF0000,  // 1: зелёный
-    0x00FF00FF,  // 2: фиолетовый
-    0x0000FF00,  // 3: жёлтый
-    0x00000000,  // 4: чёрный
+    Color::White,  
+    Color::Green,  
+    Color::Violete,  
+    Color::Yellow,  
+    Color::Black,  
     0,0,0,0,0,0,0,0,0,0,0
 };
 
@@ -58,3 +76,4 @@ void SetSandAtCoordinates(uint64_t **);
 void SetBmpPixelColor(uint64_t **);
 void WriteFullToBmp(uint64_t **);
 void PrepearFrame(uint64_t **&);
+bool parse(int, char *[]); 
