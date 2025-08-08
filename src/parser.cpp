@@ -73,12 +73,13 @@ bool IsNumber(const char* argv) {
     return true;
 }
 
-const int kFLAG = -1;
+const int kINCORRECTDATAFLAG = -1;
+const int kFILEFLAG = 1;
 
 void f(){}
 
 bool parse(int argc, char *argv[]) {
-    int argument = kFLAG;
+    int argument = kINCORRECTDATAFLAG;
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-i") == 0) {
             if(!IsCorrectIndex(argc, i)) 
@@ -87,6 +88,7 @@ bool parse(int argc, char *argv[]) {
             if (!IsFile(file))
                 return false;
             f();
+            argument = kFILEFLAG;
             continue;
 
         } else if (strcmp(argv[i], "-o") == 0) {
@@ -96,6 +98,7 @@ bool parse(int argc, char *argv[]) {
             if (!IsDirectory(directory))
                 return false;
             f();
+            argument = kFILEFLAG;
             continue;
 
         } else if (strcmp(argv[i], "-m") == 0) {
@@ -104,6 +107,7 @@ bool parse(int argc, char *argv[]) {
             if (!IsNumber(argv[i + 1]))
                 return false;
             argument = GetNumber(argv[i + 1]);
+            f();
             continue;
 
         } else if (strcmp(argv[i], "-f") == 0) {
@@ -112,38 +116,44 @@ bool parse(int argc, char *argv[]) {
             if (!IsNumber(argv[i + 1]))
                 return false;
             argument = GetNumber(argv[i + 1]);
+            f();
             continue;
 
         } else if (strncmp(argv[i], "--input=", 8) == 0) {
             fs::path file = argv[i] + 8;
-            if (IsFile(file)) 
+            if (!IsFile(file)) 
                 return false;
             f();
+            argument = kFILEFLAG;
             continue;
 
         } else if (strncmp(argv[i], "--output=", 9) == 0) {
             fs::path directory = argv[i] + 9;
-            if (IsDirectory(directory)) 
+            if (!IsDirectory(directory)) 
                 return false;
             f();
+            argument = kFILEFLAG;
             continue;
 
         } else if (strncmp(argv[i], "--max-iter=", 11) == 0) {
-            if (!IsNumber(argv[i + 1]) + 11)
+            if (!IsNumber(argv[i] + 11))
                 return false;
-            argument = GetNumber(argv[i + 1] + 11);
+            argument = GetNumber(argv[i] + 11);
+            f();
             continue;
 
         } else if (strncmp(argv[i], "--freq=", 7) == 0) {
-            if (!IsNumber(argv[i + 1]) + 7)
+            if (!IsNumber(argv[i] + 7))
                 return false;
-            argument = GetNumber(argv[i + 1] + 7);
+            argument = GetNumber(argv[i] + 7);
+            f();
             continue;
 
-        } else if (argument != kFLAG) {
-            argument = kFLAG;
+        } else if (argument != kINCORRECTDATAFLAG) {
+            argument = kINCORRECTDATAFLAG;
             continue;
         } else {
+            std::cout << "ERROR: unknown command \"" << argv[i] << "\"" << std::endl;
             return false;
         }
     }
