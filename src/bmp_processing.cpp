@@ -1,8 +1,8 @@
 #include "bmp_data.h"
 
-void FillBmpFields(
-    BITMAPFILEHEADER& file_header, 
-    BITMAPINFOHEADER& info_header, 
+void FillBmpFields(//НЕ ИЗМЕНЯТЬ ИЗ-ЗА PLAIN OLD DATA
+    BitMapFileHeader& file_header, 
+    BitMapInfoHeader& info_header, 
     int32_t& Width, 
     int32_t& height ) {
 
@@ -30,7 +30,7 @@ void FillBmpFields(
     };
 }
 
-void ExtractExtremePoints() {
+void ExtractExtremePoints() { //СДЕЛАТЬ МЕТОДОМ СТРУКТУРЫ PARAMETRIES
     std::ifstream pixel_file;
     pixel_file.open("gen.tsv");
     int16_t x;
@@ -46,14 +46,26 @@ void ExtractExtremePoints() {
     }
 }
 
-void CalculateImageSize(){
+void CalculateImageSize(){ //СДЕЛАТЬ МЕТОДОМ СТРУКТУРЫ PARAMETRIES
     image_size = {
         .len_x = 1 + std::abs(image_extreme_points.max_x - image_extreme_points.min_x),
         .len_y = 1 + std::abs(image_extreme_points.max_y - image_extreme_points.min_y)
     };
 }
 
-void SetSandAtCoordinates(uint64_t **bmp_pixel_data) {
+void PrepearFrame(uint64_t **&bmp_pixel_data) { //метод для структуры с полем координат
+    bmp_pixel_data = new uint64_t*[image_size.len_x * image_size.len_y];
+    for (int i = 0; i < image_size.len_y; i++) {
+        bmp_pixel_data[i] = new uint64_t[image_size.len_x];
+    }
+    for (int i = 0; i < image_size.len_y; i++) {
+        for (int j = 0; j < image_size.len_x; j++) {
+            bmp_pixel_data[i][j] = 0x00000000;
+        }
+    }
+}
+
+void SetSandAtCoordinates(uint64_t **bmp_pixel_data) {  //метод для структуры с полем координат
     std::ifstream pixel_file;
     pixel_file.open("gen.tsv");
     int16_t x;
@@ -66,19 +78,7 @@ void SetSandAtCoordinates(uint64_t **bmp_pixel_data) {
     pixel_file.close();
 }
 
-void PrepearFrame(uint64_t **&bmp_pixel_data) {
-    bmp_pixel_data = new uint64_t*[image_size.len_x * image_size.len_y];
-    for (int i = 0; i < image_size.len_y; i++) {
-        bmp_pixel_data[i] = new uint64_t[image_size.len_x];
-    }
-    for (int i = 0; i < image_size.len_y; i++) {
-        for (int j = 0; j < image_size.len_x; j++) {
-            bmp_pixel_data[i][j] = 0x00000000;
-        }
-    }
-}
-
-void SetBmpPixelColor(uint64_t **bmp_pixel_data) {
+void SetBmpPixelColor(uint64_t **bmp_pixel_data) {  //метод для структуры с полем координат
     for (int i = 0; i < image_size.len_y; i++) {   
         for (int j = 0; j < image_size.len_x; j++) {
             switch (bmp_pixel_data[i][j]) {
@@ -103,12 +103,12 @@ void SetBmpPixelColor(uint64_t **bmp_pixel_data) {
 }
 
 void WriteFullToBmp(uint64_t **bmp_pixel_data) {
-    BITMAPFILEHEADER file_header;
-    BITMAPINFOHEADER info_header;
+    BitMapFileHeader file_header;
+    BitMapInfoHeader info_header;
     FillBmpFields(file_header, info_header, image_size.len_x, image_size.len_y);
     std::ofstream bmp_file("x.bmp", std::ios::binary);
-    bmp_file.write(reinterpret_cast<const char*>(&file_header), sizeof(BITMAPFILEHEADER));
-    bmp_file.write(reinterpret_cast<const char*>(&info_header), sizeof(BITMAPINFOHEADER));
+    bmp_file.write(reinterpret_cast<const char*>(&file_header), sizeof(BitMapFileHeader));
+    bmp_file.write(reinterpret_cast<const char*>(&info_header), sizeof(BitMapInfoHeader));
     bmp_file.write(reinterpret_cast<const char*>(&PALETTE), sizeof(PALETTE));
 
     int bmp_row_size = ((image_size.len_x + 1) / 2 + 3) & ~3;

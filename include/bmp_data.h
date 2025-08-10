@@ -4,7 +4,7 @@
 #include <fstream>
 
 #pragma pack(push, 1)
-struct BITMAPFILEHEADER {
+struct BitMapFileHeader {
     uint16_t bf_type;
     uint32_t bf_size;
     uint16_t bf_reserved1;
@@ -12,7 +12,7 @@ struct BITMAPFILEHEADER {
     uint32_t bf_offBits;
 };
 
-struct BITMAPINFOHEADER {
+struct BitMapInfoHeader {
     uint32_t bi_size ;
     int32_t bi_width;
     int32_t bi_height;
@@ -54,14 +54,14 @@ const uint32_t PALETTE[16] = {
     0,0,0,0,0,0,0,0,0,0,0
 };
 
-struct ExtremePoints {
+struct ExtremePoints {  //ПЕРЕДЕЛАТЬ В СТРУКТУРУ PARAMETRIES
     int16_t max_x = INT16_MIN;
     int16_t max_y = INT16_MIN;
     int16_t min_x = INT16_MAX;
     int16_t min_y = INT16_MAX;
 };
 
-struct Size{
+struct Size{    //ПЕРЕДЕЛАТЬ В СТРУКТУРУ PARAMETRIES
     int32_t len_x = 0;
     int32_t len_y = 0;
 };
@@ -69,7 +69,7 @@ struct Size{
 inline ExtremePoints image_extreme_points;
 inline Size image_size;
 
-void FillBmpFields(BITMAPFILEHEADER&, BITMAPINFOHEADER&, int32_t&, int32_t&);
+void FillBmpFields(BitMapFileHeader&, BitMapInfoHeader&, int32_t&, int32_t&);
 void ExtractExtremePoints();
 void CalculateImageSize();
 void SetSandAtCoordinates(uint64_t **);

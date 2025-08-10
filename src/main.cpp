@@ -1,9 +1,8 @@
 #include "bmp_data.h"
  
 int main(int argc, char *argv[]) {
-    if (parse(argc, argv) == false) {
-        std::cout << "ERROR: uknown command" << std::endl;
-        exit(1);
+    if (!parse(argc, argv)) {
+        return 1;
     }
     ExtractExtremePoints();
     CalculateImageSize();
