@@ -53,27 +53,3 @@ const uint32_t PALETTE[16] = {
     Color::Black,  
     0,0,0,0,0,0,0,0,0,0,0
 };
-
-struct ExtremePoints {  //ПЕРЕДЕЛАТЬ В СТРУКТУРУ PARAMETRIES
-    int16_t max_x = INT16_MIN;
-    int16_t max_y = INT16_MIN;
-    int16_t min_x = INT16_MAX;
-    int16_t min_y = INT16_MAX;
-};
-
-struct Size{    //ПЕРЕДЕЛАТЬ В СТРУКТУРУ PARAMETRIES
-    int32_t len_x = 0;
-    int32_t len_y = 0;
-};
-
-inline ExtremePoints image_extreme_points;
-inline Size image_size;
-
-void FillBmpFields(BitMapFileHeader&, BitMapInfoHeader&, int32_t&, int32_t&);
-void ExtractExtremePoints();
-void CalculateImageSize();
-void SetSandAtCoordinates(uint64_t **);
-void SetBmpPixelColor(uint64_t **);
-void WriteFullToBmp(uint64_t **);
-void PrepearFrame(uint64_t **&);
-bool parse(int, char *[]); 
