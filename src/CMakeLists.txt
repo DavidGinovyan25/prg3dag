@@ -1,0 +1,2 @@
+add_subdirectory(ArgParse)
+add_subdirectory(BmpProcessing)
