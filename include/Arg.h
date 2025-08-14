@@ -19,24 +19,28 @@ struct ArgValidator {
     bool IsDirectory();
     bool IsCorrectIndex(int argc, int index, char *key);
     bool IsNumber(const char* argv);
-    bool NumberArgHandler(int argc, char *argv[], int i, char *arg);
-    bool PathArgHandler(int argc, char *argv[], int i, char *arg);
+    bool NumberArgValidate(int argc, char *argv[], int i, char *arg);
+    bool PathArgValidate(int argc, char *argv[], int i, char *arg);
 };
 
-struct ArgParser {
+struct ArgHandler {
     fs::path file;  
     fs::path directory;
     int argc;
     bool InputFileShortFlag(int argc, char *argv[], int i);
     bool OutputDirectoryShortFlag(int argc, char *argv[], int i);
     bool MaxIterationsShortFlag(int argc, char *argv[], int i);
-    bool FrequancyValueShortFlag(int argc, char *argv[], int i);
+    bool FrequencyValueShortFlag(int argc, char *argv[], int i);
     bool InputFileLongFlag(char *argv[], int i);
     bool OutputDirectoryLongFlag(char *argv[], int i);
     bool MaxIterationsLongFlag(char *argv[], int i);
-    bool FrequancyValueLongFlag(char *argv[], int i);
+    bool FrequencyValueLongFlag(char *argv[], int i);
+};
+
+struct ArgParser {
     bool Parse(int argc, char *argv[]);
 };
 
-inline ArgValidator argument_handler;
+inline ArgValidator argument_validator;
+inline ArgHandler argument_handler;
 inline ArgParser argument_parser;
