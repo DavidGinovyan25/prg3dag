@@ -1,4 +1,4 @@
-#include "ExportedBmpData.h"
+#include "ColorAliases.h"
 #include "BmpEntities.h"
 
 void BmpPixelGrid::PrepearBmpGrid() { 
