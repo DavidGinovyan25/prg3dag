@@ -1,6 +1,8 @@
 #include "Arg.h"
-#include "BmpEntities.h"
-#include "ExportedBmpData.h"
+
+#include <charconv>
+#include <cstring>
+#include <iostream>
 
 bool ArgValidator::IsPath() {
     if (!fs::exists(path)) {
@@ -71,22 +73,22 @@ int GetNumber(const char* argv) {
     return std::strtol(argv, NULL, 10);
 }
 
-bool ArgValidator::NumberArgHandler(int argc, char *argv[], int i, char *arg) {
-    if(!argument_handler.IsCorrectIndex(argc, i, argv[i])) 
+bool ArgValidator::NumberArgValidate(int argc, char *argv[], int i, char *arg) {
+    if(!argument_validator.IsCorrectIndex(argc, i, argv[i])) 
         return false;
-    if (!argument_handler.IsNumber(arg))
+    if (!argument_validator.IsNumber(arg))
         return false;
     argument = GetNumber(arg);
     return true;
 }
 
-bool ArgValidator::PathArgHandler(int argc, char *argv[], int i, char *arg) {
-    if(!argument_handler.IsCorrectIndex(argc, i, argv[i])) 
+bool ArgValidator::PathArgValidate(int argc, char *argv[], int i, char *arg) {
+    if(!argument_validator.IsCorrectIndex(argc, i, argv[i])) 
         return false;
-    argument_handler.path = arg;
-    if ((strncmp(argv[i], "-i", 2) == 0 || strncmp(argv[i], "--i", 3) == 0) && argument_handler.IsFile())
+    argument_validator.path = arg;
+    if ((strncmp(argv[i], "-i", 2) == 0 || strncmp(argv[i], "--i", 3) == 0) && argument_validator.IsFile())
         return false;
-    if (!argument_handler.IsDirectory())
+    if (!argument_validator.IsDirectory())
         return false;
     argument = ArgConst::kPathFlag;     
     return true;
