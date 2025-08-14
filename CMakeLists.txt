@@ -1,12 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
-project(PRG3DAG)
+project(MyProject)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(main
-    src/main.cpp
-    src/bmp_processing.cpp
-)
+include_directories(${CMAKE_SOURCE_DIR}/include)
 
-target_include_directories(main PRIVATE include/)
+add_subdirectory(src)      
+add_subdirectory(bin)      
