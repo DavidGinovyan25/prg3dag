@@ -1,9 +1,9 @@
 #include "Arg.h"
 #include "BmpEntities.h"
-#include "ExportedBmpData.h"
+#include "ColorAliases.h"
 
 int main(int argc, char *argv[]) {
-    argument_parser.argc = argc;
+    argument_handler.argc = argc;
     if (!argument_parser.Parse(argc, argv)) {
         return 1;
     }
