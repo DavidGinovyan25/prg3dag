@@ -1,4 +1,5 @@
 #include <cstdint>
+
 #include "BmpEntities.h"
 
 void BmpHeaders::FillBmpHeaders(int32_t& width, int32_t& height) {

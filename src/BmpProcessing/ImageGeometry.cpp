@@ -1,7 +1,9 @@
-#include <fstream>
 #include <cstdint>
+#include <fstream>
 
 #include "BmpEntities.h"
+
+
 
 void ImageGeometry::ExtractExtremePoints() { 
     std::ifstream color_grid_file;

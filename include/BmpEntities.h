@@ -1,3 +1,5 @@
+#include <cstdint>
+
 #pragma pack(push, 1)
 struct BitMapFileHeader {
     uint16_t bf_type;
@@ -41,7 +43,8 @@ struct BmpHeaders {
 
 struct BmpPixelGrid {
     uint64_t **pixel_grid;
-    void PrepearBmpGrid();
+    uint64_t **temp_grid;
+    void PrepearBmpGrid(uint64_t **grid);
     void PlaceSendPixel();
     void SetBmpPixelColor();
     void ExportToBmp();

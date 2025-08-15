@@ -4,7 +4,7 @@
 #include <iostream>
 
 bool ArgParser::Parse(int argc, char *argv[]) {
-    for (int i = 1; i < argc; i++) {
+    for (int i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "-i") == 0) {
             if (!argument_handler.InputFileShortFlag(argc, argv, i)) 
                 return false;

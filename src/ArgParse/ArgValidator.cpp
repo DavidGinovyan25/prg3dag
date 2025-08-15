@@ -41,7 +41,7 @@ bool ArgValidator::IsDirectory() {
 bool ArgValidator::IsCorrectIndex(int argc, int index, char *key) {
     if (strncmp(key, "--", 2) ==0 ) 
         return true;
-    if (index + 1 == argc) {
+    if (++index == argc) {
         std::cout << "ERROR:: index out of range" << std::endl;
         return false;
     }
