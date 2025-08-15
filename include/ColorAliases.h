@@ -1,7 +1,4 @@
 #include <cstdint>
-#include <cstdlib>
-#include <iostream>
-#include <fstream>
 
 namespace Index {
     enum Color : uint64_t {

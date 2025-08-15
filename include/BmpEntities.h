@@ -1,6 +1,3 @@
-#include <charconv>
-#include <cstring>
-
 #pragma pack(push, 1)
 struct BitMapFileHeader {
     uint16_t bf_type;

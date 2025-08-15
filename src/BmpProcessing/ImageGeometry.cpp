@@ -1,4 +1,6 @@
-#include "ColorAliases.h"
+#include <fstream>
+#include <cstdint>
+
 #include "BmpEntities.h"
 
 void ImageGeometry::ExtractExtremePoints() { 

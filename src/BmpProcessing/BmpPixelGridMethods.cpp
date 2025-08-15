@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "ColorAliases.h"
 #include "BmpEntities.h"
 
