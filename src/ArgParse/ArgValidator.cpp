@@ -4,6 +4,10 @@
 #include <cstring>
 #include <iostream>
 
+bool ArgValidator::IsCorrectArgument(const char *arg, const char *key) {
+    return strncmp(arg, key, strlen(key)) == 0;
+}
+
 bool ArgValidator::IsPath() {
     if (!fs::exists(path)) {
         std::cout << "ERROR: path doesnt exists" << std::endl;
@@ -51,7 +55,6 @@ bool ArgValidator::IsCorrectIndex(int argc, int index, char *key) {
 bool ArgValidator::IsNumber(const char* argv) { 
     int argument = 0;
     auto key = std::from_chars(argv, argv + strlen(argv),  argument);
-
     if (key.ec == std::errc::invalid_argument) {
         std::cout << "ERROR: number begin with not numeric symbol" << std::endl;
         return false;
@@ -74,22 +77,23 @@ int GetNumber(const char* argv) {
 }
 
 bool ArgValidator::NumberArgValidate(int argc, char *argv[], int i, char *arg) {
-    if(!argument_validator.IsCorrectIndex(argc, i, argv[i])) 
+    if(!validator.IsCorrectIndex(argc, i, argv[i])) 
         return false;
-    if (!argument_validator.IsNumber(arg))
+    if (!validator.IsNumber(arg))
         return false;
     argument = GetNumber(arg);
     return true;
 }
 
 bool ArgValidator::PathArgValidate(int argc, char *argv[], int i, char *arg) {
-    if(!argument_validator.IsCorrectIndex(argc, i, argv[i])) 
+    if(!validator.IsCorrectIndex(argc, i, argv[i])) 
         return false;
-    argument_validator.path = arg;
-    if ((strncmp(argv[i], "-i", 2) == 0 || strncmp(argv[i], "--i", 3) == 0) && argument_validator.IsFile())
+    validator.path = arg;
+    if (IsCorrectArgument(argv[i], "-i") || (IsCorrectArgument(argv[i], "--i")) && validator.IsFile())
         return false;
-    if (!argument_validator.IsDirectory())
+    if (!validator.IsDirectory())
         return false;
-    argument = ArgConst::kPathFlag;     
+    const int kPathFlag = 1;
+    argument = kPathFlag;     
     return true;
 }

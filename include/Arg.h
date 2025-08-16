@@ -1,19 +1,12 @@
+#include <cstring>
 #include <filesystem>
-
-namespace ArgConst {
-    const int kLenOfInputFileKey = 8;
-    const int kLenOfOutputDirectoryKey = 9;
-    const int kLenOfMaxIterationsKey = 11;
-    const int kLenOfFrequancyKey = 7;
-    const int kInCorrectDataFlag = -1;
-    const int kPathFlag = 1;
-}
+const int kInCorrectDataFlag = -1;
 
 namespace fs = std::filesystem;
 
 struct ArgValidator {
     fs::path path;
-    int argument = ArgConst::kInCorrectDataFlag;
+    int argument = kInCorrectDataFlag;
     bool IsPath();
     bool IsFile();
     bool IsDirectory();
@@ -21,6 +14,7 @@ struct ArgValidator {
     bool IsNumber(const char* argv);
     bool NumberArgValidate(int argc, char *argv[], int i, char *arg);
     bool PathArgValidate(int argc, char *argv[], int i, char *arg);
+    bool IsCorrectArgument(const char *arg, const char *key);
 };
 
 struct ArgHandler {
@@ -41,6 +35,6 @@ struct ArgParser {
     bool Parse(int argc, char *argv[]);
 };
 
-inline ArgValidator argument_validator;
+inline ArgValidator validator;
 inline ArgHandler argument_handler;
 inline ArgParser argument_parser;

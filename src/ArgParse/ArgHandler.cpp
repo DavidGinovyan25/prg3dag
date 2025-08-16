@@ -1,49 +1,37 @@
 #include "Arg.h"
 
 bool ArgHandler::InputFileShortFlag(int argc, char *argv[], int i) {
-    if (!argument_validator.PathArgValidate(argc, argv, i, argv[i + 1]))
-        return false;
-    return true;
+    return validator.PathArgValidate(argc, argv, i, argv[i + 1]);
 }
 
 bool ArgHandler::OutputDirectoryShortFlag(int argc, char *argv[], int i) {
-    if (!argument_validator.PathArgValidate(argc, argv, i, argv[i + 1]))
-        return false;
-    return true;
+    return validator.PathArgValidate(argc, argv, i, argv[i + 1]);
 }
 
 bool ArgHandler::MaxIterationsShortFlag(int argc, char *argv[], int i) {
-    if (!argument_validator.NumberArgValidate(argc, argv, i, argv[i + 1]))
-        return false;
-    return true;
+    return validator.NumberArgValidate(argc, argv, i, argv[i + 1]);
 }
 
 bool ArgHandler::FrequencyValueShortFlag(int argc, char *argv[], int i) {
-    if (!argument_validator.NumberArgValidate(argc, argv, i, argv[i + 1]))
-        return false;
-    return true;
+    return validator.NumberArgValidate(argc, argv, i, argv[i + 1]);
 }
 
 bool ArgHandler::InputFileLongFlag(char *argv[], int i) {
-    if (!argument_validator.PathArgValidate(argc, argv, i, argv[i] + ArgConst::kLenOfInputFileKey))
-        return false;
-    return true;
+    const int kLenOfInputFileKey = 8;
+    return validator.PathArgValidate(argc, argv, i, argv[i] + kLenOfInputFileKey);
 }
 
 bool ArgHandler::OutputDirectoryLongFlag(char *argv[], int i) {
-    if (!argument_validator.PathArgValidate(argc, argv, i, argv[i] + ArgConst::kLenOfOutputDirectoryKey))
-        return false;
-    return true;
+    const int kLenOfOutputDirectoryKey = 9;
+    return validator.PathArgValidate(argc, argv, i, argv[i] + kLenOfOutputDirectoryKey);
 }
 
 bool ArgHandler::MaxIterationsLongFlag(char *argv[], int i) {
-    if (!argument_validator.NumberArgValidate(argc, argv, i, argv[i] + ArgConst::kLenOfMaxIterationsKey))
-        return false;
-    return true;
+    const int kLenOfMaxIterationsKey = 11;
+    return validator.NumberArgValidate(argc, argv, i, argv[i] + kLenOfMaxIterationsKey);
 }
 
 bool ArgHandler::FrequencyValueLongFlag(char *argv[], int i) {
-    if (!argument_validator.NumberArgValidate(argc, argv, i, argv[i] + ArgConst::kLenOfFrequancyKey))
-        return false;
-    return true;
+    const int kLenOfFrequencyKey = 7;
+    return validator.NumberArgValidate(argc, argv, i, argv[i] + kLenOfFrequencyKey);
 }

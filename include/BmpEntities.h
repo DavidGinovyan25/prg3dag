@@ -42,14 +42,10 @@ struct BmpHeaders {
 };
 
 struct BmpPixelGrid {
+    ImageGeometry image_geo;
     uint64_t **pixel_grid;
     uint64_t **temp_grid;
     void PrepearBmpGrid(uint64_t **grid);
     void PlaceSendPixel();
-    void SetBmpPixelColor();
     void ExportToBmp();
 };
-
-inline ImageGeometry image_geo;
-inline BmpHeaders bmp_headers;
-inline BmpPixelGrid bmp_grid;
