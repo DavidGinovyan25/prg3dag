@@ -1,28 +1,29 @@
+#include <iostream>
 #include <fstream>
 
 #include "BmpEntities.h"
 #include "ColorAliases.h"
 
-void BmpPixelGrid::PrepearBmpGrid(uint64_t **grid) { 
-    grid = new uint64_t*[image_geo.len_x * image_geo.len_y];
+void BmpPixelGrid::PrepearBmpGrid(uint64_t **&grid) {
+    grid = new uint64_t*[image_geo.len_y];
     for (int i = 0; i < image_geo.len_y; ++i) {
         grid[i] = new uint64_t[image_geo.len_x]{};
     }
 }
 
 void BmpPixelGrid::PlaceSendPixel() {
-    std::ifstream color_grid_file;
-    color_grid_file.open("gen.tsv");
+    std::ifstream color_grid_file("gen.tsv");
     int16_t x;
     int16_t y;
-    int16_t count; 
+    int64_t count; 
+    std::cout << "Grid size: " << image_geo.len_y << " x " << image_geo.len_x << std::endl;
     while (!color_grid_file.eof()) {
-        color_grid_file >> x >> y >> count; 
-        pixel_grid[y][x] = count;
+        color_grid_file >> x >> y >> count;
+        pixel_grid[y + image_geo.shift_y][x + image_geo.shift_x] = count;
     }
 }
 
-void BmpPixelGrid::ExportToBmp() {
+void BmpPixelGrid::ExportToBmp(uint64_t **&grid) {
     BmpHeaders bmp_headers;
     bmp_headers.FillBmpHeaders(image_geo.len_x, image_geo.len_y);
     std::ofstream bmp_file("x.bmp", std::ios::binary);
@@ -34,7 +35,7 @@ void BmpPixelGrid::ExportToBmp() {
     for (int y = image_geo.len_y - 1; y >= 0; --y) {
         char *rows = new char[bmp_row_size]{};
         for (int x = 0; x < image_geo.len_x; ++x) {
-            uint64_t color = pixel_grid[y][x];
+            uint64_t color = grid[y][x];
             int row_index = x / 2;
             if (x % 2 == 0) {
                 rows[row_index] |= (color << 4); 
@@ -43,5 +44,6 @@ void BmpPixelGrid::ExportToBmp() {
             }
         }
         bmp_file.write(static_cast<const char*>(rows), bmp_row_size);
+        delete[] rows;
     }
 }
