@@ -1,25 +1,35 @@
 #include <cstdint>
 #include <fstream>
+#include <iostream>
 
 #include "BmpEntities.h"
 
+bool IsNegativeNumber(int16_t n) {
+    if (n < 0)
+        return true;
+    return false;  
+}
+
 void ImageGeometry::ExtractExtremePoints() { 
-    std::ifstream color_grid_file;
-    color_grid_file.open("gen.tsv");
+    std::ifstream color_grid_file("gen.tsv");
     int16_t x;
     int16_t y;
     int16_t count; 
     while (!color_grid_file.eof()) {
-        color_grid_file >> x >> y;
+        color_grid_file >> x >> y >> count;
         this->max_x = std::max(this->max_x, x);
         this->min_x = std::min(this->min_x, x);
         this->max_y = std::max(this->max_y, y);
         this->min_y = std::min(this->min_y, y);
-        color_grid_file >> count;
     }
+    if (IsNegativeNumber(min_x))
+        shift_x = std::abs(min_x);
+    if (IsNegativeNumber(min_y))
+        shift_y = std::abs(min_y); 
 }
 
 void ImageGeometry::CalculateImageSize(){ 
-    this->len_x = 1 + std::abs(this->max_x - this->min_x);
-    this->len_y = 1 + std::abs(this->max_y - this->min_y);
+    const int kPartOfSize = 1;
+    this->len_x = kPartOfSize + max_x + shift_x;
+    this->len_y = kPartOfSize + max_y + shift_y;
 }
