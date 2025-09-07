@@ -24,7 +24,15 @@ struct BitMapInfoHeader {
 };
 #pragma pack(pop)
 
+struct BmpHeaders {
+    BitMapFileHeader file_header;
+    BitMapInfoHeader info_header;
+    void FillBmpHeaders(int32_t& width, int32_t& height);
+};
+
 struct ImageGeometry {
+    int16_t shift_x = 0;
+    int16_t shift_y = 0;
     int16_t max_x = INT16_MIN;
     int16_t max_y = INT16_MIN;
     int16_t min_x = INT16_MAX;
@@ -35,17 +43,10 @@ struct ImageGeometry {
     void CalculateImageSize();
 };
 
-struct BmpHeaders {
-    BitMapFileHeader file_header;
-    BitMapInfoHeader info_header;
-    void FillBmpHeaders(int32_t& width, int32_t& height);
-};
-
 struct BmpPixelGrid {
     ImageGeometry image_geo;
-    uint64_t **pixel_grid;
-    uint64_t **temp_grid;
-    void PrepearBmpGrid(uint64_t **grid);
+    uint64_t **pixel_grid = nullptr;
+    void PrepearBmpGrid(uint64_t **&grid);
     void PlaceSendPixel();
-    void ExportToBmp();
+    void ExportToBmp(uint64_t **&grid);
 };

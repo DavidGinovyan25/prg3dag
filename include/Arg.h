@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cstring>
 #include <filesystem>
 const int kInCorrectDataFlag = -1;
