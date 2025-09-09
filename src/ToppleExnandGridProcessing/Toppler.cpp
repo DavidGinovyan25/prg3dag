@@ -1,6 +1,6 @@
 #include "Expansion.h"
 
-void Toppling::Topple(bool& stable, BmpPixelGrid& bmp_grid) {
+void Toppler::Topple(bool& stable, BmpPixelGrid& bmp_grid) {
     uint64_t **new_state = nullptr;
     bmp_grid.PrepearBmpGrid(new_state);
     ArrayHandler ah(bmp_grid);

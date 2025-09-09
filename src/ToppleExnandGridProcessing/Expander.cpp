@@ -47,7 +47,7 @@ void Expansion::Iterations() {
     while (iter < MAX_ITER && !stable) {
         stable = true;
         PrepearGridToExtend(bmp_grid);
-        Toppling top;
+        Toppler top;
         top.Topple(stable, bmp_grid);
         ++iter;
         if (SAVE_FREQ > 0 && iter % SAVE_FREQ == 0) {
