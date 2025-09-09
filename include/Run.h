@@ -9,7 +9,8 @@ struct Application {
         if (!argument_parser.Parse(argc, argv)) {
             return false;
         } else {
-            Expansion e;
+            BmpPixelGrid bmp_grid;
+            Expansion e(bmp_grid);
             e.Iterations();
             return true;
         }
