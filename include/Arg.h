@@ -1,14 +1,14 @@
 #pragma once
 
+#include "ArgOwner.h"
+
 #include <cstring>
 #include <filesystem>
-const int kInCorrectDataFlag = -1;
 
 namespace fs = std::filesystem;
 
 struct ArgValidator {
     fs::path path;
-    int argument = kInCorrectDataFlag;
     bool IsPath();
     bool IsFile();
     bool IsDirectory();
@@ -16,13 +16,16 @@ struct ArgValidator {
     bool IsNumber(const char* argv);
     bool NumberArgValidate(int argc, char *argv[], int i, char *arg);
     bool PathArgValidate(int argc, char *argv[], int i, char *arg);
+    bool FileArgValidate(int argc, char *argv[], int i, char *arg);
     bool IsCorrectArgument(const char *arg, const char *key);
+    int GetNumber(const char* argv);
 };
 
 struct ArgHandler {
+    int argc;
     fs::path file;  
     fs::path directory;
-    int argc;
+    ArgValidator validator;
     bool InputFileShortFlag(int argc, char *argv[], int i);
     bool OutputDirectoryShortFlag(int argc, char *argv[], int i);
     bool MaxIterationsShortFlag(int argc, char *argv[], int i);
@@ -34,9 +37,8 @@ struct ArgHandler {
 };
 
 struct ArgParser {
-    bool Parse(int argc, char *argv[]);
+    ArgHandler argument_handler;
+    ArgValidator validator;
+    bool Parse(int argc, char *argv[], ArgOwner& owner);
+    int GetNumber(const char* argv);
 };
-
-inline ArgValidator validator;
-inline ArgHandler argument_handler;
-inline ArgParser argument_parser;

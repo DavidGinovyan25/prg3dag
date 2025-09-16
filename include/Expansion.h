@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ArgOwner.h"
 #include "BmpEntities.h"
 
 #include <memory>
@@ -20,15 +21,14 @@ struct CellStateHandler {
     bool SwitchStateForY(int y, int x);
 };
 
-struct Toppling {
+struct Toppler {
     void Topple(bool& stable, BmpPixelGrid& bmp_grid);
 };
 
 struct Expansion {
     BmpPixelGrid bmp_grid;
-    Expansion(BmpPixelGrid& b) : bmp_grid(b) {}
-    void LoadFirstGrid();
-    void Iterations();
+    void LoadFirstGrid(ArgOwner& owner);
+    void Iterations(ArgOwner& owner);
     void PrepearGridToExtend(BmpPixelGrid& bmp_grid);
 };
 

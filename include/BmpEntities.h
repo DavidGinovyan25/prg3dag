@@ -1,3 +1,5 @@
+#include "ArgOwner.h"
+
 #include <cstdint>
 
 #pragma pack(push, 1)
@@ -39,7 +41,7 @@ struct ImageGeometry {
     int16_t min_y = INT16_MAX;
     int32_t len_x = 0;
     int32_t len_y = 0;
-    void ExtractExtremePoints();
+    void ExtractExtremePoints(std::string input_file);
     void CalculateImageSize();
 };
 
@@ -47,6 +49,6 @@ struct BmpPixelGrid {
     ImageGeometry image_geo;
     uint64_t **pixel_grid = nullptr;
     void PrepearBmpGrid(uint64_t **&grid);
-    void PlaceSendPixel();
-    void ExportToBmp(uint64_t **&grid);
+    void PlaceSendPixel(std::string input_file);
+    void ExportToBmp(uint64_t **&grid, std::string output_file);
 };
