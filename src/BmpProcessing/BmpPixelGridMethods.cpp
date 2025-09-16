@@ -11,22 +11,22 @@ void BmpPixelGrid::PrepearBmpGrid(uint64_t **&grid) {
     }
 }
 
-void BmpPixelGrid::PlaceSendPixel() {
-    std::ifstream color_grid_file("gen.tsv");
+void BmpPixelGrid::PlaceSendPixel(std::string input_file) {
+    std::ifstream color_grid_file(input_file);  
+    std::cout << input_file;
     int16_t x;
     int16_t y;
-    int64_t count; 
-    std::cout << "Grid size: " << image_geo.len_y << " x " << image_geo.len_x << std::endl;
-    while (!color_grid_file.eof()) {
-        color_grid_file >> x >> y >> count;
+    int64_t count;
+    while (color_grid_file >> x >> y >> count) {
         pixel_grid[y + image_geo.shift_y][x + image_geo.shift_x] = count;
     }
 }
 
-void BmpPixelGrid::ExportToBmp(uint64_t **&grid) {
+void BmpPixelGrid::ExportToBmp(uint64_t **&grid, std::string output_file) {
     BmpHeaders bmp_headers;
     bmp_headers.FillBmpHeaders(image_geo.len_x, image_geo.len_y);
-    std::ofstream bmp_file("x.bmp", std::ios::binary);
+    std::ofstream bmp_file(output_file, std::ios::binary);
+    std::cout << output_file << std::endl;
     bmp_file.write(reinterpret_cast<const char*>(&bmp_headers.file_header), sizeof(bmp_headers.file_header));
     bmp_file.write(reinterpret_cast<const char*>(&bmp_headers.info_header), sizeof(bmp_headers.info_header));
     bmp_file.write(reinterpret_cast<const char*>(&PALETTE), sizeof(PALETTE));
