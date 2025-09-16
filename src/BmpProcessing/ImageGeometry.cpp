@@ -10,13 +10,12 @@ bool IsNegativeNumber(int16_t n) {
     return false;  
 }
 
-void ImageGeometry::ExtractExtremePoints() { 
-    std::ifstream color_grid_file("gen.tsv");
+void ImageGeometry::ExtractExtremePoints(std::string input_file) { 
+    std::ifstream color_grid_file(input_file);
     int16_t x;
     int16_t y;
     int16_t count; 
-    while (!color_grid_file.eof()) {
-        color_grid_file >> x >> y >> count;
+    while (color_grid_file >> x >> y >> count) {
         this->max_x = std::max(this->max_x, x);
         this->min_x = std::min(this->min_x, x);
         this->max_y = std::max(this->max_y, y);
