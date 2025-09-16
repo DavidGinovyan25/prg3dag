@@ -1,12 +1,13 @@
 #include "Expansion.h"
+
 #include <iostream>
 #include <cstring> 
 
-void Expansion::LoadFirstGrid() {
-    bmp_grid.image_geo.ExtractExtremePoints();
+void Expansion::LoadFirstGrid(ArgOwner& owner) {
+    bmp_grid.image_geo.ExtractExtremePoints(owner.input_file);
     bmp_grid.image_geo.CalculateImageSize();
     bmp_grid.PrepearBmpGrid(bmp_grid.pixel_grid);
-    bmp_grid.PlaceSendPixel();
+    bmp_grid.PlaceSendPixel(owner.input_file);
 }
 
 void Expansion::PrepearGridToExtend(BmpPixelGrid& bmp_grid) {
@@ -38,22 +39,22 @@ void Expansion::PrepearGridToExtend(BmpPixelGrid& bmp_grid) {
     }
 }
 
-void Expansion::Iterations() {
-    const uint64_t MAX_ITER = 1000000; 
-    const uint64_t SAVE_FREQ = 1;    
-    LoadFirstGrid();
+void Expansion::Iterations(ArgOwner& owner) {
+    LoadFirstGrid(owner);
     uint64_t iter = 0;
     bool stable = false;
-    while (iter < MAX_ITER && !stable) {
+    std::cout << owner.max_iter << " " << owner.freq << std::endl;
+    while (iter < owner.max_iter && !stable) {
         stable = true;
         PrepearGridToExtend(bmp_grid);
         Toppler top;
         top.Topple(stable, bmp_grid);
         ++iter;
-        if (SAVE_FREQ > 0 && iter % SAVE_FREQ == 0) {
-            std::string filename = "frame_" + std::to_string(iter) + ".bmp";
+        if (owner.freq == 0 && iter == owner.max_iter)
+            bmp_grid.ExportToBmp(bmp_grid.pixel_grid, owner.output_dir + "frame" + ".bmp");
+        if (owner.freq > 0 && iter % owner.freq == 0) {
             std::cout << "Saving iteration " << iter << " to BMP\n";
-            bmp_grid.ExportToBmp(bmp_grid.pixel_grid);
+            bmp_grid.ExportToBmp(bmp_grid.pixel_grid, owner.output_dir + "frame_" + std::to_string(iter) + ".bmp");
         }
     }
     std::cout << "Finished after " << iter << " iterations\n";
