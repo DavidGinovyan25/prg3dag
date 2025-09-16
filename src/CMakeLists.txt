@@ -1,3 +1,3 @@
 add_subdirectory(ArgParse)
 add_subdirectory(BmpProcessing)
-add_subdirectory(Toppling)
+add_subdirectory(ToppleExpandGridProcessing)
