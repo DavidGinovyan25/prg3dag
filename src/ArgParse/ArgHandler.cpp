@@ -1,7 +1,7 @@
 #include "Arg.h"
 
 bool ArgHandler::InputFileShortFlag(int argc, char *argv[], int i) {
-    return validator.PathArgValidate(argc, argv, i, argv[i + 1]);
+    return validator.FileArgValidate(argc, argv, i, argv[i + 1]); 
 }
 
 bool ArgHandler::OutputDirectoryShortFlag(int argc, char *argv[], int i) {
@@ -18,7 +18,7 @@ bool ArgHandler::FrequencyValueShortFlag(int argc, char *argv[], int i) {
 
 bool ArgHandler::InputFileLongFlag(char *argv[], int i) {
     const int kLenOfInputFileKey = 8;
-    return validator.PathArgValidate(argc, argv, i, argv[i] + kLenOfInputFileKey);
+    return validator.FileArgValidate(argc, argv, i, argv[i] + kLenOfInputFileKey);
 }
 
 bool ArgHandler::OutputDirectoryLongFlag(char *argv[], int i) {
