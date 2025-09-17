@@ -1,3 +1,0 @@
-/home/david/c++/prg3dag/build/CMakeFiles/main.dir
-/home/david/c++/prg3dag/build/CMakeFiles/edit_cache.dir
-/home/david/c++/prg3dag/build/CMakeFiles/rebuild_cache.dir
